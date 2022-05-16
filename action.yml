@@ -1,0 +1,9 @@
+name: "Assign to reviewers"
+description: "Assign a pull request to its reviewers"
+inputs:
+  token:
+    description: "The token to use to authenticate to GitHub"
+    default: ${{ github.token }}
+runs:
+  using: "node16"
+  main: "index.js"
