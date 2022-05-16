@@ -1,11 +1,34 @@
 const core = require("@actions/core");
 const github = require("@actions/github");
 
+async function getPullRequest() {
+  const octokit = github.getOctokit(token);
+
+  const {
+    commit_sha,
+    repo: { owner, repo },
+  } = github.context;
+
+  const { data: pulls } =
+    await octokit.rest.repos.listPullRequestsAssociatedWithCommit({
+      owner,
+      repo,
+      commit_sha,
+    });
+
+  const filteredPRs = pulls
+    .filter(({ state }) => state === "open")
+    .filter(({ draft }) => !draft);
+
+  return filteredPRs[0];
+}
+
 async function run() {
   try {
     const token = core.getInput("token");
     const octokit = github.getOctokit(token);
-    const { owner, repo, number } = github.context.issue;
+    const { owner, repo } = github.context.repo;
+    const { number } = await getPullRequest(octokit, context);
 
     const { data: reviewers } = await octokit.rest.pulls.listRequestedReviewers(
       {
