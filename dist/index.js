@@ -8890,7 +8890,7 @@ async function run() {
     const token = core.getInput("token");
     const octokit = github.getOctokit(token);
     const { owner, repo } = github.context.repo;
-    const { number } = await getPullRequest(octokit, context);
+    const { number } = await getPullRequest();
 
     const { data: reviewers } = await octokit.rest.pulls.listRequestedReviewers(
       {
