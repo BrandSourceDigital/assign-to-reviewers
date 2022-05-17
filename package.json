@@ -1,14 +1,14 @@
 {
   "name": "assign-to-reviewers",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "description": "GitHub Action to assign a pull request to its reviewers",
-  "main": "index.js",
+  "main": "src/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/BrandSourceDigital/assign-to-reviewers.git"
   },
   "scripts": {
-    "build": "ncc build index.js"
+    "build": "ncc build src/index.js"
   },
   "author": "Stephen Wade <stephen.wade@avb.net>",
   "license": "ISC",
@@ -21,6 +21,7 @@
     "@actions/github": "^5.0.3"
   },
   "devDependencies": {
-    "@vercel/ncc": "^0.33.4"
+    "@vercel/ncc": "^0.33.4",
+    "typescript": "^4.6.4"
   }
 }

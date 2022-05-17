@@ -6,7 +6,7 @@ async function getPullRequest() {
   const octokit = github.getOctokit(token);
 
   const {
-    commit_sha,
+    sha,
     repo: { owner, repo },
   } = github.context;
 
@@ -14,7 +14,7 @@ async function getPullRequest() {
     await octokit.rest.repos.listPullRequestsAssociatedWithCommit({
       owner,
       repo,
-      commit_sha,
+      commit_sha: sha,
     });
 
   const filteredPRs = pulls
@@ -42,7 +42,7 @@ async function run() {
     await octokit.rest.issues.addAssignees({
       owner,
       repo,
-      issue_number,
+      issue_number: number,
       assignees: reviewers.users.map((user) => user.login),
     });
   } catch (error) {
