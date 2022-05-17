@@ -6,8 +6,14 @@ This action assigns a pull request to the reviewers.
 
 ## `token`
 
-The token to use to authenticate to GitHub. Defaults to `${{ github.token }}` if not specified.
+The token to use to authenticate to GitHub. Defaults to `${{ github.token }}`.
+
+## `sha`
+
+The SHA of a commit on the PR branch. Defaults to `${{ github.event.pull_request.head.sha }}`.
 
 ## Example usage
 
+```
 uses: BrandSourceDigital/assign-to-reviewers
+```

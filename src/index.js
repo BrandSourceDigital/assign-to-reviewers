@@ -4,17 +4,15 @@ const github = require("@actions/github");
 async function getPullRequest() {
   const token = core.getInput("token");
   const octokit = github.getOctokit(token);
+  const commit_sha = core.getInput("sha");
 
-  const {
-    sha,
-    repo: { owner, repo },
-  } = github.context;
+  const { owner, repo } = github.context.repo;
 
   const { data: pulls } =
     await octokit.rest.repos.listPullRequestsAssociatedWithCommit({
       owner,
       repo,
-      commit_sha: sha,
+      commit_sha,
     });
 
   const filteredPRs = pulls
