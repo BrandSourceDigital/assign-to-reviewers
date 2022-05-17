@@ -2,6 +2,7 @@ const core = require("@actions/core");
 const github = require("@actions/github");
 
 async function getPullRequest() {
+  const token = core.getInput("token");
   const octokit = github.getOctokit(token);
 
   const {

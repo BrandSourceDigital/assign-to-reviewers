@@ -8864,6 +8864,7 @@ const core = __nccwpck_require__(2186);
 const github = __nccwpck_require__(5438);
 
 async function getPullRequest() {
+  const token = core.getInput("token");
   const octokit = github.getOctokit(token);
 
   const {
