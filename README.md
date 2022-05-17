@@ -14,6 +14,17 @@ The SHA of a commit on the PR branch. Defaults to `${{ github.event.pull_request
 
 ## Example usage
 
-```
-uses: BrandSourceDigital/assign-to-reviewers
+```yaml
+name: Assign to reviewers
+
+on:
+  pull_request:
+    types: [opened, review_requested]
+
+jobs:
+  assign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Assign to reviewers
+        uses: BrandSourceDigital/assign-to-reviewers@v0.3
 ```
