@@ -1,6 +1,6 @@
 {
   "name": "assign-to-reviewers",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "GitHub Action to assign a pull request to its reviewers",
   "main": "src/index.js",
   "repository": {
@@ -17,11 +17,11 @@
   },
   "homepage": "https://github.com/BrandSourceDigital/assign-to-reviewers#readme",
   "dependencies": {
-    "@actions/core": "^1.8.2",
-    "@actions/github": "^5.0.3"
+    "@actions/core": "^1.10.0",
+    "@actions/github": "^5.1.1"
   },
   "devDependencies": {
-    "@vercel/ncc": "^0.33.4",
-    "typescript": "^4.6.4"
+    "@vercel/ncc": "^0.34.0",
+    "typescript": "^4.8.4"
   }
 }
