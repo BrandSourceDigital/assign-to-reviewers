@@ -19,7 +19,7 @@ name: Assign to reviewers
 
 on:
   pull_request:
-    types: [opened, review_requested]
+    types: [review_requested, review_request_removed]
 
 jobs:
   assign:
