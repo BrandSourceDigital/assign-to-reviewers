@@ -8,5 +8,5 @@ inputs:
     description: "The SHA of a commit on the PR branch"
     default: ${{ github.event.pull_request.head.sha }}
 runs:
-  using: "node16"
+  using: "node20"
   main: "dist/index.js"
