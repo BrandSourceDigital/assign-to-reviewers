@@ -6,8 +6,6 @@ async function run() {
   const octokit = github.getOctokit(token);
   const { owner, repo } = github.context.repo;
   const { pull_request, action } = github.context.payload;
-  /** @type {import('@octokit/openapi-types').components['schemas']['simple-user']} */
-  const requested_reviewer = github.context.payload.requested_reviewer;
 
   if (!pull_request) {
     core.setFailed("No pull request found.");
@@ -15,14 +13,16 @@ async function run() {
   }
   const { number } = pull_request;
 
-  if (!requested_reviewer) {
-    core.info(
-      "No requested reviewer found. Maybe a team was assigned? Ignoring."
-    );
-    return;
-  }
-
   if (action === "review_requested") {
+    /** @type {import('@octokit/openapi-types').components['schemas']['simple-user']} */
+    const requested_reviewer = github.context.payload.requested_reviewer;
+    if (!requested_reviewer) {
+      core.info(
+        "No requested reviewer found. Maybe a team was assigned? Ignoring."
+      );
+      return;
+    }
+
     try {
       await octokit.rest.issues.addAssignees({
         owner,
@@ -34,6 +34,15 @@ async function run() {
       core.setFailed(error.message);
     }
   } else if (action === "review_request_removed") {
+    /** @type {import('@octokit/openapi-types').components['schemas']['simple-user']} */
+    const requested_reviewer = github.context.payload.requested_reviewer;
+    if (!requested_reviewer) {
+      core.info(
+        "No requested reviewer found. Maybe a team was assigned? Ignoring."
+      );
+      return;
+    }
+
     try {
       await octokit.rest.issues.removeAssignees({
         owner,
@@ -44,6 +53,25 @@ async function run() {
     } catch (error) {
       core.info(`Error removing assignee: ${error.message}`);
       core.info("Ignoring error");
+    }
+  } else if (action === "opened" || action === "ready_for_review") {
+    try {
+      const { data: reviewers } =
+        await octokit.rest.pulls.listRequestedReviewers({
+          owner,
+          repo,
+          pull_number: number,
+        });
+      if (reviewers.users.length > 0) {
+        await octokit.rest.issues.addAssignees({
+          owner,
+          repo,
+          issue_number: number,
+          assignees: reviewers.users.map((u) => u.login),
+        });
+      }
+    } catch (error) {
+      core.setFailed(error.message);
     }
   } else {
     core.setFailed(`Unsupported action: ${action}`);
