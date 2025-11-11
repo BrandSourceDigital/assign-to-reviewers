@@ -4,9 +4,6 @@ inputs:
   token:
     description: The token to use to authenticate to GitHub
     default: ${{ github.token }}
-  sha:
-    description: The SHA of a commit on the PR branch
-    default: ${{ github.event.pull_request.head.sha }}
 runs:
   using: node24
   main: dist/index.js
