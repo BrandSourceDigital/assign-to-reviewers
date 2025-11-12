@@ -1,6 +1,6 @@
 {
   "name": "assign-to-reviewers",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "GitHub Action to assign a pull request to its reviewers",
   "main": "src/index.js",
   "repository": {

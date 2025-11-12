@@ -31,7 +31,7 @@ async function run() {
         assignees: [requested_reviewer.login],
       });
     } catch (error) {
-      core.setFailed(error.message);
+      core.warning(`Error adding assignee: ${error.message}`);
     }
   } else if (action === "review_request_removed") {
     /** @type {import('@octokit/openapi-types').components['schemas']['simple-user']} */
@@ -51,8 +51,7 @@ async function run() {
         assignees: [requested_reviewer.login],
       });
     } catch (error) {
-      core.info(`Error removing assignee: ${error.message}`);
-      core.info("Ignoring error");
+      core.warning(`Error removing assignee: ${error.message}`);
     }
   } else if (action === "opened" || action === "ready_for_review") {
     try {
@@ -63,12 +62,16 @@ async function run() {
           pull_number: number,
         });
       if (reviewers.users.length > 0) {
-        await octokit.rest.issues.addAssignees({
-          owner,
-          repo,
-          issue_number: number,
-          assignees: reviewers.users.map((u) => u.login),
-        });
+        try {
+          await octokit.rest.issues.addAssignees({
+            owner,
+            repo,
+            issue_number: number,
+            assignees: reviewers.users.map((u) => u.login),
+          });
+        } catch (error) {
+          core.warning(`Error adding assignee: ${error.message}`);
+        }
       }
     } catch (error) {
       core.setFailed(error.message);
